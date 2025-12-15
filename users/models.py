@@ -1,7 +1,7 @@
 from django.db import models
 from djano.contrib.auth.models import AbstractUser
 
-class User (AbstractUser):
+class Users (AbstractUser):
   ROLE_CHOICE = (
     ('BOOKER', 'booker'),
     ('COMPANION', 'companion')
