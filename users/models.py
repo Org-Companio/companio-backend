@@ -12,7 +12,17 @@ class User(AbstractUser):  # ← Also change 'Users' to 'User'
   email = models.EmailField(unique=True)
   role = models.CharField(max_length=20, choices=ROLE_CHOICES)  # ← FIXED: 'choices'
   created_at = models.DateTimeField(auto_now_add=True)
-  updated_at = models.DateTimeField(auto_now=True)
 
   def __str__(self):
       return f"{self.username} ({self.role})"
+
+
+class profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    bio = models.TextField(blank=True, null=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return f"Profile of {self.user.username}"
