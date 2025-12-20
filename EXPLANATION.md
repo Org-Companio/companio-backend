@@ -1,20 +1,3 @@
-# Line-by-Line Explanation: Models & Serializers
-
-## How Serializers Link to Views
-
-**NOT indexing!** Serializers are linked through **class attributes** and **method calls**:
-
-```python
-# In views.py
-class UserRegisterView(GenericAPIView):
-    serializer_class = UserRegistrationSerializer  # ← Direct class reference
-    
-    def post(self, request):
-        serializer = self.get_serializer(data=request.data)  # DRF gets the linked serializer
-        serializer.save()  # Calls serializer.create() which creates User model
-```
-
----
 
 ## 📋 MODELS.PY - Line by Line
 
@@ -215,11 +198,6 @@ class UserRegisterView(GenericAPIView):
   - `required=True`: Must be provided
   - `validators=[validate_password]`: Enforces strong passwords
 - **Function**: Accepts password, validates it, but never returns it
-
-### Line 36: `password2 = serializers.CharField(write_only=True, required=True, label='Confirm Password')`
-- **What**: Password confirmation field
-- **Why**: Users must type password twice to avoid typos
-- **Function**: Used only for validation, not stored
 
 ### Line 40: `fields = ['username', 'email', 'password', 'password2', ...]`
 - **What**: Fields needed for registration
