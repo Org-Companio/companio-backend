@@ -11,7 +11,11 @@ class User(AbstractUser):  # ← Also change 'Users' to 'User'
   phone = models.CharField(max_length=20, unique=True, blank=True, null=True)
   email = models.EmailField(unique=True)
   role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-  created_at = models.DateTimeField(auto_now_add=True)
+  date_joined = models.DateTimeField(auto_now_add=True)
+
+#  use email as username
+  USERNAME_FIELD = 'email'
+  REQUIRED_FIELDS = ['role']
 
   def __str__(self):
       return f"{self.username} ({self.role})"

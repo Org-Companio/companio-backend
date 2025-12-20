@@ -7,7 +7,7 @@ import dj_database_url
 
 #  Load enviroment variable from .env.local files.
 
-load_dotenv()
+load_dotenv('.env.local')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -122,11 +122,15 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
+
 
 # Swagger/OpenAPI configuration
 SPECTACULAR_SETTINGS = {
