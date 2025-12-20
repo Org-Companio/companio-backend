@@ -11,6 +11,7 @@ class User(AbstractUser):
   email = models.EmailField(unique=True)
   role = models.CharField(max_length=20, choices=ROLE_CHOICES)
   date_joined = models.DateTimeField(auto_now_add=True)
+  mobile_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
 
   USERNAME_FIELD = 'email'
   REQUIRED_FIELDS = ['role']

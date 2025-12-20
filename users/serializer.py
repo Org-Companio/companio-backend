@@ -12,7 +12,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'phone', 'role', 'date_joined', 'is_active']
+        fields = ['id', 'email', 'phone', 'mobile_number', 'role', 'date_joined', 'is_active']
         read_only_fields = ['id', 'date_joined']
 
 class UserDetailSerializer(serializers.ModelSerializer):
@@ -20,38 +20,37 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'phone', 'role', 'date_joined', 'is_active', 'profile']
+        fields = ['id', 'email', 'phone', 'mobile_number', 'role', 'date_joined', 'is_active', 'profile']
         read_only_fields = ['id', 'date_joined']
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, min_length=8)
+    
     class Meta:
         model = User
-        fields = ['email', 'password', 'phone', 'role']
+        fields = ['email', 'password', 'phone', 'mobile_number', 'role']
         extra_kwargs = {
-            'email': {'required': True, 'unique': True},
+            'email': {'required': True},
             'role': {'required': True},
+            'password': {'write_only': True},
         }
 
-        def validate(self, attrs):
-            if attrs['password'] != attrs['password2']:
-                raise serializers.ValidationError({"password": "Password fields didn't match."})
-            return attrs
-        
-        def create(self, validated_data):
-            validated_data.pop('password2')
-            password = validated_data.pop('password')
-            user = User.objects.create_user(password=password, **validated_data)
-            Profile.objects.create(user=user)
-            return user
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("A user with this email already exists.")
+        return value
+    
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = User.objects.create_user(password=password, **validated_data)
+        Profile.objects.create(user=user)
+        return user
         
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'phone', 'role']
-        extra_kwargs = {
-            'email': {'required': False},
-        }
+        fields = ['email', 'phone', 'mobile_number', 'role']
 
     def validate_email(self, value):
         user = self.instance
