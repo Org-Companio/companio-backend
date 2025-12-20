@@ -13,7 +13,6 @@ class User(AbstractUser):  # ← Also change 'Users' to 'User'
   role = models.CharField(max_length=20, choices=ROLE_CHOICES)
   date_joined = models.DateTimeField(auto_now_add=True)
 
-#  use email as username
   USERNAME_FIELD = 'email'
   REQUIRED_FIELDS = ['role']
 
