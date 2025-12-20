@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'booking',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +127,13 @@ REST_FRAMEWORK = {
     ]
 }
 
+# Swagger/OpenAPI configuration
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Companio API',
+    'DESCRIPTION': 'API for the Companio app',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 

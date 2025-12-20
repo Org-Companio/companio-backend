@@ -13,5 +13,3 @@ class ListUsers(APIView):
   # View list of users
   authentication_classes = [authentication.TokenAuthentication]
   permission_classes = [permissions.IsAdminUser]
-
-
